@@ -1,7 +1,8 @@
 packages:
   - apps/expo
   - apps/nextjs
-  - apps/penguinclone
+  - apps/eventr
+  - apps/twimoji
   - packages/api
   - packages/auth
   - packages/db
