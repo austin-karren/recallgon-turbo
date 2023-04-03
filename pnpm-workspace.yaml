@@ -1,7 +1,5 @@
 packages:
   - apps/expo
-  - apps/nextjs
-  - apps/eventr
   - apps/twimoji
   - packages/api
   - packages/auth

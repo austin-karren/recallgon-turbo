@@ -1,18 +1,17 @@
 import "../styles/globals.css";
 import type { AppType } from "next/app";
-import type { Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import { api } from "~/utils/api";
 
-const MyApp: AppType<{ session: Session | null }> = ({
+const MyApp: AppType = ({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
+    <ClerkProvider>
       <Component {...pageProps} />
-    </SessionProvider>
+    </ClerkProvider>
   );
 };
 
