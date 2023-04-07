@@ -6,7 +6,7 @@ import { FlashList } from "@shopify/flash-list";
 import { api, type RouterOutputs } from "../utils/api";
 
 const PostCard: React.FC<{
-  post: RouterOutputs["post"]["all"][number];
+  post: RouterOutputs["post"]["getAll"][number];
   onPress: () => void;
   onDelete: () => void;
 }> = ({ post, onPress, onDelete }) => {
@@ -15,9 +15,8 @@ const PostCard: React.FC<{
       <View className="flex-grow">
         <TouchableOpacity onPress={onPress}>
           <Text
-            className={`text-xl font-semibold text-[#cc66ff] ${
-              !post.title ? "italic" : ""
-            }`}
+            className={`text-xl font-semibold text-[#cc66ff] ${!post.title ? "italic" : ""
+              }`}
           >
             {post.title || "Untitled"}
           </Text>
@@ -43,7 +42,7 @@ const CreatePost: React.FC = () => {
     async onSuccess() {
       setTitle("");
       setContent("");
-      await utils.post.all.invalidate();
+      await utils.post.getAll.invalidate();
     },
   });
 
@@ -79,7 +78,7 @@ const CreatePost: React.FC = () => {
 };
 
 export const HomeScreen = () => {
-  const postQuery = api.post.all.useQuery();
+  const postQuery = api.post.getAll.useQuery();
   const [showPost, setShowPost] = React.useState<string | null>(null);
 
   const deletePostMutation = api.post.delete.useMutation({

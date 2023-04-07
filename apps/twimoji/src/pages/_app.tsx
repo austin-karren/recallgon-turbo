@@ -4,12 +4,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import { api } from "~/utils/api";
 
-const MyApp: AppType = ({
-  Component,
-  pageProps: { ...pageProps },
-}) => {
+const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   return (
-    <ClerkProvider>
+    <ClerkProvider {...pageProps}>
       <Component {...pageProps} />
     </ClerkProvider>
   );

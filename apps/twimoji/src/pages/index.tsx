@@ -6,7 +6,7 @@ import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { api, type RouterOutputs } from "~/utils/api";
 
 const PostCard: React.FC<{
-  post: RouterOutputs["post"]["all"][number];
+  post: RouterOutputs["post"]["getAll"][number];
   onPostDelete?: () => void;
 }> = ({ post, onPostDelete }) => {
   return (
@@ -39,7 +39,7 @@ const CreatePostForm: React.FC = () => {
     async onSuccess() {
       setTitle("");
       setContent("");
-      await utils.post.all.invalidate();
+      await utils.post.getAll.invalidate();
     },
   });
 
@@ -73,13 +73,13 @@ const CreatePostForm: React.FC = () => {
 };
 
 const Home: NextPage = () => {
-  const postQuery = api.post.all.useQuery();
+  const user = useUser();
+
+  const postQuery = api.post.getAll.useQuery();
 
   const deletePostMutation = api.post.delete.useMutation({
     onSettled: () => postQuery.refetch(),
   });
-
-  const user = useUser();
 
   return (
     <>
@@ -94,9 +94,16 @@ const Home: NextPage = () => {
             {!user.isSignedIn && <SignInButton />}
             {!!user.isSignedIn && <SignOutButton />}
           </div>
+          {/* posts */}
+          <div>{postQuery.isLoading && <div>Loading...</div>}</div>
+          <div>{!postQuery.data && !postQuery.isLoading && <div>No posts</div>}</div>
+          <div>
+            {postQuery.data?.map((post) => (
+              <div key={post.id}>{post.content}</div>
+            ))}
+          </div>
 
           {/* <CreatePostForm /> */}
-
         </div>
       </main>
     </>
