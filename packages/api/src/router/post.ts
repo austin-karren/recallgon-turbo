@@ -1,10 +1,36 @@
+import type { User } from "@clerk/nextjs/dist/api";
+import { clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const postRouter = router({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.post.findMany({ orderBy: { id: "desc" } });
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const filterUserForClient = (user: User) => {
+      return {
+        id: user.id,
+        username: user.username,
+        profileImageUrl: user.profileImageUrl,
+        email: user.emailAddresses,
+      };
+    };
+
+    const posts = await ctx.prisma.post.findMany({
+      orderBy: { id: "desc" },
+      take: 100,
+    });
+
+    const users = (
+      await clerkClient.users.getUserList({
+        userId: posts.map((post) => post.authorId),
+        limit: 100,
+      })
+    ).map(filterUserForClient);
+
+    return posts.map((post) => ({
+      post,
+      author: users.find((user) => user.id === post.authorId),
+    }));
   }),
   getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.post.findFirst({ where: { id: input } });
