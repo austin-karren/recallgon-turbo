@@ -1,8 +1,9 @@
 import type { User } from "@clerk/nextjs/dist/api";
 import { clerkClient } from "@clerk/nextjs/server";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { publicProcedure, router } from "../trpc";
 
 export const postRouter = router({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -27,19 +28,29 @@ export const postRouter = router({
       })
     ).map(filterUserForClient);
 
-    return posts.map((post) => ({
-      post,
-      author: users.find((user) => user.id === post.authorId),
-    }));
+    return posts.map((post) => {
+      const author = users.find((user) => user.id === post.authorId);
+
+      if (!author)
+        throw new TRPCError({
+          message: "Author for post not found",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return {
+        post,
+        author,
+      };
+    });
   }),
   getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.post.findFirst({ where: { id: input } });
   }),
-  create: protectedProcedure
-    .input(z.object({ title: z.string(), content: z.string() }))
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.post.create({ data: input });
-    }),
+  // create: protectedProcedure
+  //   .input(z.object({ title: z.string(), content: z.string() }))
+  //   .mutation(({ ctx, input }) => {
+  //     return ctx.prisma.post.create({ data: input });
+  //   }),
   delete: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
     return ctx.prisma.post.delete({ where: { id: input } });
   }),
