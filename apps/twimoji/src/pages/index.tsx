@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { SignInButton, useUser } from "@clerk/nextjs";
 
 import { api, type RouterOutputs } from "~/utils/api";
+import Image from "next/image";
 
 const PostWizard: React.FC = () => {
   const { user } = useUser();
