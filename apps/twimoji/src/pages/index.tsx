@@ -7,6 +7,7 @@ import { api, type RouterOutputs } from "~/utils/api";
 
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { LoadingBox } from "components/loading";
 
 dayjs.extend(relativeTime);
 
@@ -72,7 +73,7 @@ const Home: NextPage = () => {
   if (postQuery.isLoading) {
     return (
       <div className="flex justify-center items-center h-screen twimoji">
-        Loading...
+        <LoadingBox />
       </div>
     );
   }

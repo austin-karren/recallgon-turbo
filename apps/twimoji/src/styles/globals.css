@@ -9,4 +9,7 @@
   .twimoji {
     @apply bg-black text-gray-50;
   }
+  .loader {
+    @apply background: #8b5cf6;
+  }
 }
