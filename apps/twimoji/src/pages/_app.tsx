@@ -6,7 +6,14 @@ import { api } from "~/utils/api";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   return (
-    <ClerkProvider {...pageProps}>
+    <ClerkProvider
+      appearance={{
+        layout: {
+          logoPlacement: "inside",
+        }
+      }}
+      {...pageProps}
+    >
       <Component {...pageProps} />
     </ClerkProvider>
   );

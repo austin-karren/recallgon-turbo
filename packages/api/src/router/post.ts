@@ -31,7 +31,7 @@ export const postRouter = router({
     return posts.map((post) => {
       const author = users.find((user) => user.id === post.authorId);
 
-      if (!author)
+      if (!author || !author.username)
         throw new TRPCError({
           message: "Author for post not found",
           code: "INTERNAL_SERVER_ERROR",
@@ -39,7 +39,10 @@ export const postRouter = router({
 
       return {
         post,
-        author,
+        author: {
+          ...author,
+          username: author.username, // put this here to make TS not show null option here ¯\_(ツ)_/¯
+        },
       };
     });
   }),
