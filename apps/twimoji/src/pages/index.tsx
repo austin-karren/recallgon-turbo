@@ -25,7 +25,7 @@ const PostWizard: React.FC = () => {
       />
       <input
         placeholder="Type your favorite emojis 🐱"
-        className="bg-transparent grow outline-none"
+        className="bg-transparent grow outline-none text-lg"
       />
     </div>
   );
