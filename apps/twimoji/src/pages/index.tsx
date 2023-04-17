@@ -2,12 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { SignInButton, useUser } from "@clerk/nextjs";
+import { ErrorPage, LoadingPage } from "components/loading";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 import { api, type RouterOutputs } from "~/utils/api";
-
-import dayjs from "dayjs";
-import relativeTime from 'dayjs/plugin/relativeTime';
-import { LoadingBox } from "components/loading";
 
 dayjs.extend(relativeTime);
 
@@ -56,8 +55,11 @@ const PostView = ({ post, author }: PostWithUser) => {
       </div>
       <div className="px-4 flex flex-col">
         <div className="fle gap-1">
-          <span className="font-normal text-gray-200">{`@${author?.username}`}</span> {" · "}
-          <span className="font-normal text-gray-400">{`${dayjs(post?.createdAt).fromNow()}`}</span>
+          <span className="font-normal text-gray-200">{`@${author?.username}`}</span>{" "}
+          {" · "}
+          <span className="font-normal text-gray-400">{`${dayjs(
+            post?.createdAt,
+          ).fromNow()}`}</span>
         </div>
         <p>{post.content}</p>
       </div>
@@ -65,25 +67,35 @@ const PostView = ({ post, author }: PostWithUser) => {
   );
 };
 
-const Home: NextPage = () => {
-  const user = useUser();
+const Feed = () => {
+  const { data: posts, isLoading: postsLoading } = api.post.getAll.useQuery();
 
-  const postQuery = api.post.getAll.useQuery();
-
-  if (postQuery.isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen twimoji">
-        <LoadingBox />
-      </div>
-    );
+  if (postsLoading) {
+    return <LoadingPage />;
   }
 
-  if (!postQuery.data) {
-    return (
-      <div className="flex justify-center items-center h-screen twimoji">
-        Something went wrong.
-      </div>
-    );
+  if (!posts) {
+    return <ErrorPage />;
+  }
+
+  return (
+    <div className="flex flex-col">
+      {posts.map((fullPost) => (
+        <PostView {...fullPost} key={fullPost?.post.id} />
+      ))}
+    </div>
+  );
+};
+
+const Home: NextPage = () => {
+  const { isLoaded: userLoaded, isSignedIn } = useUser();
+
+  // start fetching posts asap before first render
+  api.post.getAll.useQuery();
+
+  // Return empty div if user is not loaded
+  if (!userLoaded) {
+    return <div />;
   }
 
   return (
@@ -96,22 +108,18 @@ const Home: NextPage = () => {
       <main className="flex justify-center h-[100dvh] twimoji">
         <div className="container w-full border-gray-500 md:border-x md:max-w-2xl">
           <div className="border-b border-gray-500 p-4 flex">
-            {!user.isSignedIn && (
+            {!isSignedIn && (
               <div className="flex justify-center">
                 <SignInButton />
               </div>
             )}
-            {!!user.isSignedIn && (
+            {!!isSignedIn && (
               <div className="flex justify-center grow">
                 <PostWizard />
               </div>
             )}
           </div>
-          <div className="flex flex-col">
-            {postQuery.data?.map((fullPost) => (
-              <PostView {...fullPost} key={fullPost?.post.id} />
-            ))}
-          </div>
+          <Feed />
           {/* <CreatePostForm /> */}
         </div>
       </main>
