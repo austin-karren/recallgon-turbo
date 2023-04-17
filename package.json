@@ -1,5 +1,5 @@
 {
-  "name": "eventr-turbo",
+  "name": "eventer-turbo",
   "private": true,
   "packageManager": "pnpm@7.13.0",
   "scripts": {
