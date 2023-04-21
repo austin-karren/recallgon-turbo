@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 
-export const SpinningBox = (props: { size?: number }) => {
+export const SpinningBox = (props: { size?: number; color?: string }) => {
   const style = {
     height: props.size ?? 16,
     width: props.size ?? 16,
-    backgroundColor: "#8b5cf6",
+    backgroundColor: props.color ?? "#8b5cf6",
   };
   return (
     <motion.div
@@ -26,125 +26,53 @@ export const SpinningBox = (props: { size?: number }) => {
   );
 };
 
-export const LoadingCircle = () => {
-  const containerStyle = {
-    // position: "relative",
-    width: "3rem",
-    height: "3rem",
+const Spin = (props: { size?: number; color?: string }) => {
+  const style = {
+    height: props.size ?? 16,
+    width: props.size ?? 16,
   };
-
-  const circleStyle = {
-    display: "block",
-    width: "3rem",
-    height: "3rem",
-    border: "0.25rem solid #d1d5db",
-    borderTop: "#8b5cf6",
-    borderRadius: "50%",
-    // position: "absolute",
-    top: 0,
-    left: 0,
-  };
-
-  const spinTransition = {
-    loop: Infinity,
-    ease: "linear",
-    duration: 1,
-  };
-
   return (
-    <div style={containerStyle}>
-      <motion.span
-        style={circleStyle}
-        animate={{ rotate: 360 }}
-        transition={spinTransition}
-      />
-    </div>
+    <svg
+      className="spinner spin"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      style={style}
+    >
+      <circle
+        className="spinner-circle"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      ></circle>
+      <path
+        className="spinner-path"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      ></path>
+    </svg>
   );
 };
 
-export default function ThreeDotsWave() {
-  const LoadingDot = {
-    display: "block",
-    width: "2rem",
-    height: "2rem",
-    backgroundColor: "#8b5cf6",
-    borderRadius: "50%",
-  };
-
-  const LoadingContainer = {
-    width: "5rem",
-    height: "2rem",
-    display: "flex",
-    justifyContent: "space-around",
-  };
-
-  const ContainerVariants = {
-    initial: {
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-    animate: {
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const DotVariants = {
-    initial: {
-      y: "0%",
-    },
-    animate: {
-      y: "100%",
-    },
-  };
-
-  const DotTransition = {
-    duration: 0.5,
-    yoyo: Infinity,
-    ease: "easeInOut",
-  };
-
+export const LoadingPage = ({ mt }: { mt?: string | number }) => {
+  const style = {
+    marginTop: mt ?? '4rem'
+  }
   return (
-    <div>
-      <motion.div
-        style={LoadingContainer}
-        variants={ContainerVariants}
-        initial="initial"
-        animate="animate"
-      >
-        <motion.span
-          style={LoadingDot}
-          variants={DotVariants}
-          transition={DotTransition}
-        />
-        <motion.span
-          style={LoadingDot}
-          variants={DotVariants}
-          transition={DotTransition}
-        />
-        <motion.span
-          style={LoadingDot}
-          variants={DotVariants}
-          transition={DotTransition}
-        />
-      </motion.div>
-    </div>
-  );
-}
-
-export const LoadingPage = () => {
-  return (
-    <div className="flex justify-center items-center h-[100dvh] twimoji">
-      <SpinningBox size={60} />
-    </div>
+    <div className="flex justify-center items-center" style={style}>
+      <Spin size={36} />
+    </div >
   );
 };
 
-export const ErrorPage = () => {
+export const ErrorPage = ({ mt }: { mt?: string | number }) => {
+  const style = {
+    marginTop: mt ?? '4rem'
+  }
   return (
-    <div className="flex justify-center items-center h-[100dvh] twimoji">
+    <div className="flex justify-center items-center" style={style}>
       Something went wrong.
     </div>
   );

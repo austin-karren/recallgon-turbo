@@ -3,7 +3,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const postRouter = router({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -49,11 +49,12 @@ export const postRouter = router({
   getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.post.findFirst({ where: { id: input } });
   }),
-  // create: protectedProcedure
-  //   .input(z.object({ title: z.string(), content: z.string() }))
-  //   .mutation(({ ctx, input }) => {
-  //     return ctx.prisma.post.create({ data: input });
-  //   }),
+  create: protectedProcedure
+    .input(z.object({ content: z.string().emoji() }))
+    .mutation(({ ctx, input }) => {
+      const authorId = ctx.auth.userId;
+      return ctx.prisma.post.create({ data: { ...input, authorId } });
+    }),
   delete: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
     return ctx.prisma.post.delete({ where: { id: input } });
   }),

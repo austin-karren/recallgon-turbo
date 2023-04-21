@@ -2,14 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply bg-black text-gray-50;
+}
+
 @layer components {
   .btn-primary {
     @apply rounded-lg bg-violet-500 py-2 px-4 font-semibold text-white shadow-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-opacity-75;
   }
-  .twimoji {
-    @apply bg-black text-gray-50;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  .loader {
-    @apply background: #8b5cf6;
-  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+.spinner-circle {
+  opacity: 0.25;
+}
+
+.spinner-path {
+  opacity: 0.75;
 }
