@@ -50,10 +50,21 @@ export const postRouter = router({
     return ctx.prisma.post.findFirst({ where: { id: input } });
   }),
   create: protectedProcedure
-    .input(z.object({ content: z.string().emoji() }))
-    .mutation(({ ctx, input }) => {
+    .input(
+      z.object({
+        content: z.string().emoji().min(1).max(280),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
       const authorId = ctx.auth.userId;
-      return ctx.prisma.post.create({ data: { ...input, authorId } });
+      console.log("authorId", authorId);
+      const post = await ctx.prisma.post.create({
+        data: {
+          authorId,
+          content: input.content,
+        },
+      });
+      return post;
     }),
   delete: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
     return ctx.prisma.post.delete({ where: { id: input } });

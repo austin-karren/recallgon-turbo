@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -12,6 +13,9 @@ dayjs.extend(relativeTime);
 
 const PostWizard: React.FC = () => {
   const { user } = useUser();
+  const postRef = useRef<HTMLInputElement>(null);
+
+  const { mutate: createPost } = api.post.create.useMutation();
 
   console.log("userId", user?.id);
 
@@ -31,7 +35,22 @@ const PostWizard: React.FC = () => {
       <input
         placeholder="✨ Type your favorite emojis"
         className="bg-transparent grow outline-none text-xl"
+        ref={postRef}
       />
+      <button
+        onClick={() => {
+          if (!postRef?.current) {
+            return;
+          }
+          console.log("submitting", postRef.current.value);
+          createPost({
+            content: postRef.current.value,
+          });
+          postRef.current.value = "";
+        }}
+      >
+        post
+      </button>
     </div>
   );
 };
