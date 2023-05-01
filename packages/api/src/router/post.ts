@@ -17,7 +17,7 @@ export const postRouter = router({
     };
 
     const posts = await ctx.prisma.post.findMany({
-      orderBy: { id: "desc" },
+      orderBy: { createdAt: "desc" },
       take: 100,
     });
 
