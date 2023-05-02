@@ -15,7 +15,7 @@ const PostWizard: React.FC = () => {
   const { user } = useUser();
   const postRef = useRef<HTMLInputElement>(null);
 
-  const { mutate: createPost } = api.post.create.useMutation();
+  const { mutate: createPost, isLoading: isPosting } = api.post.create.useMutation();
 
   console.log("userId", user?.id);
 
@@ -36,6 +36,7 @@ const PostWizard: React.FC = () => {
         placeholder="✨ Type your favorite emojis"
         className="bg-transparent grow outline-none text-xl"
         ref={postRef}
+        disabled={isPosting}
       />
       <button
         onClick={() => {

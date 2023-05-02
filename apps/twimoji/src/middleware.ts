@@ -16,6 +16,5 @@ export const config = {
      * - public folder
      */
     "/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)",
-    "/",
   ],
 };

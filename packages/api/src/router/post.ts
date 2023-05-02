@@ -46,9 +46,11 @@ export const postRouter = router({
       };
     });
   }),
+
   getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.post.findFirst({ where: { id: input } });
   }),
+
   create: protectedProcedure
     .input(
       z.object({
@@ -66,6 +68,7 @@ export const postRouter = router({
       });
       return post;
     }),
+
   delete: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
     return ctx.prisma.post.delete({ where: { id: input } });
   }),
