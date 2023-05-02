@@ -6,22 +6,24 @@ import { FlashList } from "@shopify/flash-list";
 import { api, type RouterOutputs } from "../utils/api";
 
 const PostCard: React.FC<{
-  post: RouterOutputs["post"]["getAll"][number];
+  item: RouterOutputs["post"]["getAll"][number];
   onPress: () => void;
   onDelete: () => void;
-}> = ({ post, onPress, onDelete }) => {
+}> = ({ item, onPress, onDelete }) => {
   return (
     <View className="flex flex-row rounded-lg bg-white/10 p-4">
       <View className="flex-grow">
         <TouchableOpacity onPress={onPress}>
-          <Text
+          {/* <Text
             className={`text-xl font-semibold text-[#cc66ff] ${!post.title ? "italic" : ""
               }`}
           >
-            {post.title || "Untitled"}
-          </Text>
-          <Text className={`mt-2 text-white ${!post.content ? "italic" : ""}`}>
-            {post.content || "No content"}
+            {item.post.title || "Untitled"}
+          </Text> */}
+          <Text
+            className={`mt-2 text-white ${!item.post.content ? "italic" : ""}`}
+          >
+            {item.post.content || "No content"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -66,7 +68,6 @@ const CreatePost: React.FC = () => {
         className="rounded bg-[#cc66ff] p-2"
         onPress={() => {
           mutate({
-            title,
             content,
           });
         }}
@@ -117,9 +118,9 @@ export const HomeScreen = () => {
           ItemSeparatorComponent={() => <View className="h-2" />}
           renderItem={(p) => (
             <PostCard
-              post={p.item}
-              onPress={() => setShowPost(p.item.id)}
-              onDelete={() => deletePostMutation.mutate(p.item.id)}
+              item={p.item}
+              onPress={() => setShowPost(p.item.post.id)}
+              onDelete={() => deletePostMutation.mutate(p.item.post.id)}
             />
           )}
         />
