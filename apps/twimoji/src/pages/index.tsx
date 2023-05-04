@@ -15,7 +15,14 @@ const PostWizard: React.FC = () => {
   const { user } = useUser();
   const postRef = useRef<HTMLInputElement>(null);
 
-  const { mutate: createPost, isLoading: isPosting } = api.post.create.useMutation();
+  const ctx = api.useContext();
+
+  const { mutate: createPost, isLoading: isPosting } = api.post.create.useMutation({
+    onSuccess: () => {
+      if (postRef?.current) postRef.current.value = "";
+      void ctx.post.getAll.invalidate(); // void to ignore promise
+    }
+  });
 
   console.log("userId", user?.id);
 
@@ -40,14 +47,9 @@ const PostWizard: React.FC = () => {
       />
       <button
         onClick={() => {
-          if (!postRef?.current) {
-            return;
-          }
-          console.log("submitting", postRef.current.value);
-          createPost({
+          if (postRef?.current) createPost({
             content: postRef.current.value,
           });
-          postRef.current.value = "";
         }}
       >
         post
