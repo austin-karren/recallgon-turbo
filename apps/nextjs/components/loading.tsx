@@ -26,7 +26,7 @@ export const SpinningBox = (props: { size?: number; color?: string }) => {
   );
 };
 
-const Spin = (props: { size?: number; color?: string }) => {
+export const Spin = (props: { size?: number; color?: string }) => {
   const style = {
     height: props.size ?? 16,
     width: props.size ?? 16,

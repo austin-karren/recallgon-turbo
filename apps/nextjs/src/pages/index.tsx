@@ -1,26 +1,37 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import { ErrorPage, LoadingPage } from "components/loading";
+import { ErrorPage, LoadingPage, Spin } from "components/loading";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import { api, type RouterOutputs } from "~/utils/api";
+import { toast } from "react-hot-toast";
 
 dayjs.extend(relativeTime);
 
 const PostWizard: React.FC = () => {
   const { user } = useUser();
   const postRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState("");
 
   const ctx = api.useContext();
 
   const { mutate: createPost, isLoading: isPosting } = api.post.create.useMutation({
     onSuccess: () => {
       if (postRef?.current) postRef.current.value = "";
+      setInput("");
       void ctx.post.getAll.invalidate(); // void to ignore promise
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
+        toast.error("Failed to post! Please try again later.");
+      }
     }
   });
 
@@ -44,8 +55,18 @@ const PostWizard: React.FC = () => {
         className="bg-transparent grow outline-none text-xl"
         ref={postRef}
         disabled={isPosting}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            if (postRef?.current) createPost({
+              content: postRef.current.value,
+            });
+          }
+        }}
+        onChange={(e) => {
+          setInput(e.currentTarget.value);
+        }}
       />
-      <button
+      {input !== "" && !isPosting && (<button
         onClick={() => {
           if (postRef?.current) createPost({
             content: postRef.current.value,
@@ -53,7 +74,12 @@ const PostWizard: React.FC = () => {
         }}
       >
         post
-      </button>
+      </button>)}
+      {isPosting && (
+        <div className="flex items-center">
+          <Spin size={24} />
+        </div>
+      )}
     </div>
   );
 };
