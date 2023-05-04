@@ -1,21 +1,30 @@
 import type { User } from "@clerk/nextjs/dist/api";
 import { clerkClient } from "@clerk/nextjs/server";
 import { TRPCError } from "@trpc/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 import { z } from "zod";
 
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 
+const filterUserForClient = (user: User) => {
+  return {
+    id: user.id,
+    username: user.username,
+    profileImageUrl: user.profileImageUrl,
+    email: user.emailAddresses,
+  };
+};
+
+// Rate limit 3 requests per 30 seconds
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(3, "30 s"),
+  analytics: true,
+});
+
 export const postRouter = router({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    const filterUserForClient = (user: User) => {
-      return {
-        id: user.id,
-        username: user.username,
-        profileImageUrl: user.profileImageUrl,
-        email: user.emailAddresses,
-      };
-    };
-
     const posts = await ctx.prisma.post.findMany({
       orderBy: { createdAt: "desc" },
       take: 100,
@@ -41,7 +50,7 @@ export const postRouter = router({
         post,
         author: {
           ...author,
-          username: author.username, // put this here to make TS not show null option here ¯\_(ツ)_/¯
+          username: author.username,
         },
       };
     });
@@ -59,7 +68,12 @@ export const postRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const authorId = ctx.auth.userId;
-      console.log("authorId", authorId);
+
+      // Rate limit per user
+      const { success } = await ratelimit.limit(authorId);
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+
+      // Create post
       const post = await ctx.prisma.post.create({
         data: {
           authorId,
