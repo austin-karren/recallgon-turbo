@@ -9,5 +9,14 @@
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
-  "cSpell.words": ["ratelimit", "upstash"]
+  "cSpell.words": [
+    "codesplitting",
+    "offical",
+    "Plasmo",
+    "ratelimit",
+    "Solito",
+    "Supabase",
+    "typesafety",
+    "upstash"
+  ]
 }
