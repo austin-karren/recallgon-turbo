@@ -1,7 +1,8 @@
+import type { Config } from "tailwindcss";
 const { fontFamily } = require("tailwindcss/defaultTheme");
-/** @type {import("tailwindcss").Config} */
-module.exports = {
-  presets: [require("@acme/tailwind-config")],
+
+export default {
+  content: [""],
   theme: {
     extend: {
       fontFamily: {
@@ -9,4 +10,5 @@ module.exports = {
       },
     },
   },
-};
+  plugins: [],
+} satisfies Config;
