@@ -23,7 +23,7 @@
     "expo-auth-session": "^4.0.3",
     "expo-random": "^13.1.1",
     "expo-secure-store": "^12.1.1",
-    "expo-splash-screen": "~0.17.5",
+    "expo-splash-screen": "~0.18.0",
     "expo-status-bar": "~1.4.2",
     "expo-web-browser": "^12.1.1",
     "nativewind": "^2.0.11",

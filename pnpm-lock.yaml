@@ -79,8 +79,8 @@ importers:
         specifier: ^12.1.1
         version: 12.1.1(expo@47.0.13)
       expo-splash-screen:
-        specifier: ~0.17.5
-        version: 0.17.5(expo-modules-autolinking@1.0.2)(expo@47.0.13)
+        specifier: ~0.18.0
+        version: 0.18.0(expo-modules-autolinking@1.0.2)(expo@47.0.13)
       expo-status-bar:
         specifier: ~1.4.2
         version: 1.4.2
@@ -2223,6 +2223,27 @@ packages:
       '@expo/config-types': 47.0.0
       '@expo/image-utils': 0.3.22
       '@expo/json-file': 8.2.36
+      debug: 4.3.4
+      expo-modules-autolinking: 1.0.2
+      fs-extra: 9.1.0
+      resolve-from: 5.0.0
+      semver: 7.3.2
+      xml2js: 0.4.23
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
+  /@expo/prebuild-config@6.0.0(expo-modules-autolinking@1.0.2):
+    resolution: {integrity: sha512-UW0QKAoRelsalVMhAG1tmegwS+2tbefvUi6/0QiKPlMLg8GFDQ5ZnzsSmuljD0SzT5yGg8oSpKYhnrXJ6pRmIQ==}
+    peerDependencies:
+      expo-modules-autolinking: '>=0.8.1'
+    dependencies:
+      '@expo/config': 8.0.2
+      '@expo/config-plugins': 6.0.1
+      '@expo/config-types': 48.0.0
+      '@expo/image-utils': 0.3.22
+      '@expo/json-file': 8.2.37
       debug: 4.3.4
       expo-modules-autolinking: 1.0.2
       fs-extra: 9.1.0
@@ -5451,13 +5472,13 @@ packages:
       expo: 47.0.13(@babel/core@7.20.12)
     dev: false
 
-  /expo-splash-screen@0.17.5(expo-modules-autolinking@1.0.2)(expo@47.0.13):
-    resolution: {integrity: sha512-ejSO78hwHXz8T9u8kh8t4r6CR4h70iBvA65gX8GK+dYxZl6/IANPbIb2VnUpND9vqfW+JnkDw+ZFst+gDnkpcQ==}
+  /expo-splash-screen@0.18.0(expo-modules-autolinking@1.0.2)(expo@47.0.13):
+    resolution: {integrity: sha512-j3dKem1A0WDvfkJAaWJhsuqJxKcaenBEqR6ZxaYIJhmv1aA5Pb2symCO9qY2Mb/bBtAjV/8bIEZRJtsBqGDAxw==}
     peerDependencies:
       expo: '*'
     dependencies:
       '@expo/configure-splash-screen': 0.6.0
-      '@expo/prebuild-config': 5.0.7(expo-modules-autolinking@1.0.2)
+      '@expo/prebuild-config': 6.0.0(expo-modules-autolinking@1.0.2)
       expo: 47.0.13(@babel/core@7.20.12)
     transitivePeerDependencies:
       - encoding
