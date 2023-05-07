@@ -111,8 +111,8 @@ importers:
         specifier: ^18.0.25
         version: 18.2.6
       '@types/react-native':
-        specifier: ~0.71.0
-        version: 0.71.0
+        specifier: ~0.71.6
+        version: 0.71.6
       eslint:
         specifier: ^8.32.0
         version: 8.40.0
@@ -3250,8 +3250,8 @@ packages:
       '@types/react': 18.2.6
     dev: true
 
-  /@types/react-native@0.71.0:
-    resolution: {integrity: sha512-4MAoseGM8zv5PKQyc2SvKldvOmCJX4mNqj+mDqh0J9yJMzWQnGenk2vQCi+jxMXa3xWYIgx+ewaCSw0XiiGGSw==}
+  /@types/react-native@0.71.6:
+    resolution: {integrity: sha512-eCqEZ+GhW9L9o6yVoPqCCAq8Sbd6liaKlh6WviD0X7O035NEe7VQ+q9KXYL+mhyZrLI5sbX7f3G973gG6fuiyQ==}
     dependencies:
       '@types/react': 18.2.6
     dev: true
