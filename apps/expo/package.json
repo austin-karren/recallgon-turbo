@@ -14,7 +14,7 @@
     "@acme/api": "*",
     "@acme/tailwind-config": "*",
     "@clerk/clerk-expo": "^0.16.4",
-    "@shopify/flash-list": "1.3.1",
+    "@shopify/flash-list": "1.4.3",
     "@tanstack/react-query": "^4.23.0",
     "@trpc/client": "^10.9.0",
     "@trpc/react-query": "^10.9.0",
