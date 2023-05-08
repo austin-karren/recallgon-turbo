@@ -24,7 +24,7 @@
     "@trpc/react-query": "^10.25.0",
     "@trpc/server": "^10.25.0",
     "@upstash/ratelimit": "^0.4.2",
-    "@upstash/redis": "^1.20.5",
+    "@upstash/redis": "^1.20.6",
     "dayjs": "^1.11.7",
     "framer-motion": "^10.12.2",
     "next": "^13.4.1",
