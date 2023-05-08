@@ -114,7 +114,7 @@ importers:
         specifier: ~0.71.6
         version: 0.71.6
       eslint:
-        specifier: ^8.32.0
+        specifier: ^8.40.0
         version: 8.40.0
       postcss:
         specifier: ^8.4.21
